@@ -35,6 +35,7 @@ EzraOS includes multiple specialized modes for programming, Linux, Git, Bible st
 5. Linux and Ubuntu
 6. Git and GitHub
 7. Bible Study
+0. Exit
 
 ---
 
