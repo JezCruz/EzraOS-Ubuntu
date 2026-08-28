@@ -2,7 +2,8 @@
 
 set -e
 
-REPO="$HOME/EzraOS"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO="$SCRIPT_DIR"
 RELEASE_BRANCH="v2-server"
 MAIN_BRANCH="main"
 TAG="v2.1.0-alpha"

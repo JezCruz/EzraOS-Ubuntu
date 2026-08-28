@@ -16,7 +16,7 @@ EzraOS provides a terminal-based interface with multiple specialized AI modes po
 * Python Programming mode
 * SQL Learning mode
 * Git and GitHub mode
-* Linux mode
+* Linux and Ubuntu mode
 * Bible Study mode
 * Streaming AI responses
 * Separate conversation history per mode

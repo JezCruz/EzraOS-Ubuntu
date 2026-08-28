@@ -35,7 +35,6 @@ EzraOS includes multiple specialized modes for programming, Linux, Git, Bible st
 5. Linux and Ubuntu
 6. Git and GitHub
 7. Bible Study
-0. Exit
 
 ---
 
@@ -188,15 +187,29 @@ Example:
 EzraOS
 
 [1] General Chat
-[2] Java Programming
-[3] Python Programming
-[4] SQL Learning
-[5] Linux and Ubuntu
-[6] Git and GitHub
-[7] Bible Study
+[2] Coding Mode
+[3] Bible Study
+[4] Projects
+[5] Notes
+[6] System Information
+[7] Settings
+[0] Exit
 ```
 
+Programming and development assistants are available inside **Coding Mode**:
+
+```text
+Coding Mode
+
+[1] Java Programming
+[2] Python Programming
+[3] SQL Learning
+[4] Git and GitHub
+[5] Linux and Ubuntu
+[0] Back
+```
 Select a number and start chatting with Ezra.
+
 
 ---
 

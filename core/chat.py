@@ -10,7 +10,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-BASE = Path.home() / "EzraOS"
+BASE = Path(__file__).resolve().parent.parent
 CONFIG_FILE = BASE / "config" / "ezra.conf"
 NAME_FILE = BASE / "data" / "user_name.txt"
 HISTORY_DIR = BASE / "data" / "history"

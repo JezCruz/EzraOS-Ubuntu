@@ -3,13 +3,19 @@
 BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 clear
+
 echo "SYSTEM INFORMATION"
 echo
-printf "Device       : %s %s\n" \
-    "$(getprop ro.product.manufacturer)" \
-    "$(getprop ro.product.model)"
-printf "Android      : %s\n" \
-    "$(getprop ro.build.version.release)"
+
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS_NAME="${PRETTY_NAME:-${NAME:-Linux}}"
+else
+    OS_NAME="$(uname -s)"
+fi
+
+printf "Hostname     : %s\n" "$(hostname)"
+printf "Operating OS : %s\n" "$OS_NAME"
 printf "Architecture : %s\n" "$(uname -m)"
 printf "Kernel       : %s\n" "$(uname -r)"
 printf "Memory       : %s\n" \
