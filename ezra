@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE="$HOME/EzraOS"
 NAME_FILE="$BASE/data/user_name.txt"
@@ -73,7 +73,7 @@ start_mode() {
     fi
 
     clear
-    python "$BASE/core/chat.py" "$mode"
+    python3 "$BASE/core/chat.py" "$mode"
 }
 
 coding_menu() {

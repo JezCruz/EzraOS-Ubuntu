@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 
 BASE="$HOME/EzraOS"
 CONFIG="$BASE/config/ezra.conf"
