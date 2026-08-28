@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-BASE="$HOME/EzraOS"
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+BASE="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+
 NAME_FILE="$BASE/data/user_name.txt"
 
 BLUE='\033[1;34m'
@@ -84,7 +86,7 @@ coding_menu() {
         echo "[2] Python"
         echo "[3] SQL"
         echo "[4] Git and GitHub"
-        echo "[5] Linux and Termux"
+        echo "[5] Linux and Ubuntu"
         echo "[0] Back"
         echo
 
@@ -104,7 +106,7 @@ coding_menu() {
                 start_mode git "Git and GitHub"
                 ;;
             5)
-                start_mode linux "Linux and Termux"
+                start_mode linux "Linux and Ubuntu"
                 ;;
             0)
                 return

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-BASE="$HOME/EzraOS"
+set -euo pipefail
+
+BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CONFIG="$BASE/config/ezra.conf"
 PID_FILE="$BASE/runtime/server.pid"
 LOG_FILE="$BASE/logs/server.log"
@@ -32,13 +34,7 @@ clean_stale_server() {
 start_server() {
     clean_stale_server
 
-    # May existing server man o wala ang PID file,
-    # gamitin ito kapag healthy na ang port.
     if server_healthy; then
-        return 0
-    fi
-
-    if server_running && server_healthy; then
         return 0
     fi
 
@@ -49,6 +45,16 @@ start_server() {
 
     rm -f "$PID_FILE"
     : > "$LOG_FILE"
+
+    if ! command -v llama-server >/dev/null 2>&1; then
+        echo
+        echo "llama-server was not found."
+        echo "Run the EzraOS installer first:"
+        echo
+        echo "    bash install.sh"
+        echo
+        return 1
+    fi
 
     nohup llama-server \
         -hf "$MODEL" \
@@ -66,6 +72,7 @@ start_server() {
     local attempts=0
 
     while [ "$attempts" -lt 120 ]; do
+
         if server_healthy; then
             return 0
         fi
@@ -73,6 +80,7 @@ start_server() {
         if ! server_running; then
             echo
             echo "The AI server stopped unexpectedly."
+            echo
             echo "Recent server log:"
             echo
             tail -n 25 "$LOG_FILE"
@@ -81,6 +89,7 @@ start_server() {
 
         attempts=$((attempts + 1))
         sleep 1
+
     done
 
     echo
@@ -93,6 +102,7 @@ stop_server() {
     clean_stale_server
 
     if server_running; then
+
         kill "$(cat "$PID_FILE")" 2>/dev/null || true
 
         local attempts=0
@@ -101,6 +111,7 @@ stop_server() {
             attempts=$((attempts + 1))
             sleep 1
         done
+
     fi
 
     rm -f "$PID_FILE"
@@ -117,21 +128,27 @@ status_server() {
 }
 
 case "${1:-start}" in
+
     start)
         start_server
         ;;
+
     stop)
         stop_server
         ;;
+
     restart)
         stop_server
         start_server
         ;;
+
     status)
         status_server
         ;;
+
     *)
         echo "Usage: server.sh {start|stop|restart|status}"
         exit 1
         ;;
+
 esac

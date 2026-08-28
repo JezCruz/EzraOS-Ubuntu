@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASE="$HOME/EzraOS"
+BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FILE="$BASE/data/notes.txt"
 
 touch "$FILE"

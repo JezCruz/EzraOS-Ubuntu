@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/python
+#!/usr/bin/env python3
 
 from __future__ import annotations
 
@@ -129,16 +129,20 @@ def create_modes(name: str) -> dict[str, dict[str, str]]:
             ),
         },
         "linux": {
-            "label": "Linux and Termux",
+            "label": "Linux and Ubuntu",
             "greeting": (
-                f"Hello, {name}. Linux and Termux Mode is ready.\n"
+                f"Hello, {name}. Linux and Ubuntu Mode is ready.\n"
                 "Ask me about commands, packages, files, permissions, scripts, "
-                "and Termux setup."
+                "services, networking, and Ubuntu setup."
             ),
             "system": (
-                f"You are Ezra, {name}'s Linux and Termux assistant. "
-                "Prefer Android-compatible Termux commands. Do not suggest "
-                "root-only commands unless explicitly requested."
+                f"You are Ezra, {name}'s Linux and Ubuntu assistant. "
+                "Prefer commands compatible with Ubuntu and Debian-based Linux. "
+                "Use apt for package management when appropriate. "
+                "Explain shell commands clearly and warn before destructive commands. "
+                "Consider permissions, paths, services, networking, Git, SSH, "
+                "processes, and system administration. "
+                "Do not suggest Android or Termux-specific commands unless explicitly requested."
             ),
         },
         "bible": {
