@@ -1,56 +1,56 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$SCRIPT_DIR"
-RELEASE_BRANCH="v2-server"
 MAIN_BRANCH="main"
-TAG="v2.1.0-alpha"
+TAG="v2.1.0-alpha.1"
 
 cd "$REPO"
 
-echo "==> Fetching remote..."
-git fetch origin
+echo "==> Checking repository state..."
 
-echo "==> Checking out release branch..."
-git switch "$RELEASE_BRANCH"
-
-echo "==> Staging changes..."
-git add .
-
-if ! git diff --cached --quiet; then
-    git commit -m "Prepare EzraOS v2.1.0 Alpha release"
-else
-    echo "No new changes to commit."
+if [ -n "$(git status --porcelain)" ]; then
+    echo "Error: working tree has uncommitted changes."
+    echo "Commit or discard them before publishing a release."
+    exit 1
 fi
 
-echo "==> Pushing $RELEASE_BRANCH..."
-git push -u origin "$RELEASE_BRANCH"
+CURRENT_BRANCH="$(git branch --show-current)"
 
-echo "==> Switching to $MAIN_BRANCH..."
-git switch "$MAIN_BRANCH"
+if [ "$CURRENT_BRANCH" != "$MAIN_BRANCH" ]; then
+    echo "Error: release must be published from '$MAIN_BRANCH'."
+    echo "Current branch: $CURRENT_BRANCH"
+    exit 1
+fi
 
-echo "==> Updating local main..."
-git pull --ff-only origin "$MAIN_BRANCH" 2>/dev/null || true
+echo "==> Fetching origin..."
+git fetch origin
 
-echo "==> Merging $RELEASE_BRANCH into $MAIN_BRANCH..."
-git merge --no-ff "$RELEASE_BRANCH" -m "Merge $RELEASE_BRANCH for EzraOS v2.1.0 Alpha"
+echo "==> Checking that local main is up to date..."
+git pull --ff-only origin "$MAIN_BRANCH"
+
+if git rev-parse "$TAG" >/dev/null 2>&1; then
+    echo "Error: tag '$TAG' already exists locally."
+    exit 1
+fi
+
+if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+    echo "Error: tag '$TAG' already exists on origin."
+    exit 1
+fi
 
 echo "==> Pushing main..."
-git push -u origin "$MAIN_BRANCH"
+git push origin "$MAIN_BRANCH"
 
-echo "==> Recreating release tag on latest main..."
-git tag -d "$TAG" 2>/dev/null || true
-git push origin ":refs/tags/$TAG" 2>/dev/null || true
-git tag -a "$TAG" -m "EzraOS v2.1.0 Alpha"
+echo "==> Creating release tag..."
+git tag -a "$TAG" -m "EzraOS Ubuntu v2.1.0 Alpha"
 
-echo "==> Pushing tag..."
+echo "==> Pushing release tag..."
 git push origin "$TAG"
 
 echo
-echo "Release branch pushed : $RELEASE_BRANCH"
-echo "Main branch updated   : $MAIN_BRANCH"
-echo "Release tag pushed    : $TAG"
-echo
-echo "Done."
+echo "Release published successfully."
+echo "Branch : $MAIN_BRANCH"
+echo "Tag    : $TAG"
